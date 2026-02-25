@@ -55,7 +55,7 @@ services:
     environment:
       - NODE_ENV=production
       - HOOPSS_SPAWN_URL=http://hoops-spawn:11182
-      - HOOPSS_WS_HOST=localhost
+      - HOOPSS_WS_HOST=${HOOPSS_WS_HOST:-localhost}
       - HOOPSS_LICENSE=${HOOPSS_LICENSE:-}
     volumes:
       # 업로드된 파일 저장: 호스트(프로젝트/uploads) → 컨테이너 /app/uploads
