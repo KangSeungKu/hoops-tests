@@ -1,0 +1,147 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #1a1a2e;
+  color: #eee;
+}
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.header {
+  padding: 1rem 1.5rem;
+  background: #16213e;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.header h1 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.controls label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.controls input,
+.controls select {
+  padding: 0.35rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background: #0f0f1a;
+  color: #eee;
+}
+.controls button {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: none;
+  background: #4361ee;
+  color: #fff;
+  cursor: pointer;
+}
+.controls button:hover {
+  background: #3651d4;
+}
+.controls-sep {
+  color: #666;
+  font-size: 0.9rem;
+}
+.upload-label {
+  cursor: pointer;
+}
+.upload-btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  background: #3a3a5c;
+  color: #ccc;
+  border: 1px solid #444;
+}
+.upload-label:hover .upload-btn {
+  background: #45456a;
+  color: #eee;
+}
+.upload-done {
+  color: #6bcb77;
+  font-size: 0.9rem;
+}
+.upload-error {
+  color: #f87171;
+  font-size: 0.85rem;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.upload-error-block {
+  display: block;
+  color: #f87171;
+  font-size: 0.8rem;
+  white-space: pre-line;
+  max-width: 420px;
+  max-height: 120px;
+  overflow: auto;
+  padding: 0.5rem;
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  border-radius: 4px;
+  text-align: left;
+}
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.placeholder {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  text-align: center;
+  padding: 2rem;
+}
+.placeholder small {
+  margin-top: 0.5rem;
+  color: #666;
+}
+.viewer-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.viewer-status {
+  padding: 0.5rem 1rem;
+  background: #0f0f1a;
+  font-size: 0.875rem;
+  color: #aaa;
+}
+.viewer-status-detail {
+  color: #666;
+  word-break: break-all;
+}
+.viewer-container {
+  flex: 1;
+  min-height: 400px;
+  background: #0d0d14;
+}
