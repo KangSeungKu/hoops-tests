@@ -116,7 +116,34 @@ docker compose up -d
 
 ---
 
-## 7. 로그·재시작
+## 7. (선택) HTTPS + WSS 사용 시
+
+페이지를 **HTTPS**(`https://hoops.cadian.com`)로 서비스하면, 브라우저는 **비보안 WebSocket**(`ws://`) 연결을 차단합니다. **WSS**(`wss://`)로 통일해야 합니다.
+
+**1) .env에 WSS 관련 추가**
+
+```env
+HOOPSS_PACKAGE_PATH=/web/hoops
+HOOPSS_WS_HOST=hoops.cadian.com
+HOOPSS_WS_SECURE=1
+# HOOPSS_WS_PATH_PREFIX=/streaming   # 기본값이므로 생략 가능
+```
+
+- `HOOPSS_WS_SECURE=1`: 백엔드가 WebSocket URL을 `wss://호스트/streaming/<port>` 형태로 반환합니다.
+- nginx 443에서 `/streaming/<port>`를 127.0.0.1:`<port>`로 프록시하면, 별도 SSL 리스닝 없이 WSS가 동작합니다.
+
+**2) nginx 설정**
+
+- `nginx/hoops.cadian.com.conf`에서 **HTTPS용 server 블록**을 활성화하고, 인증서 경로를 실제 경로로 수정합니다.
+- 같은 파일에 **주석 처리된 WSS용 location**(`location ~ ^/streaming/(11000|...|11031)$`)이 있으므로, HTTPS server 블록과 함께 **주석 해제**합니다.
+- 적용 후: `sudo nginx -t && sudo systemctl reload nginx`
+
+이후 `https://hoops.cadian.com`으로 접속하면 WebSocket이 `wss://hoops.cadian.com/streaming/11000` 등으로 연결됩니다.  
+방화벽에서는 **80, 443**만 열어두고, 11000~11031은 nginx가 로컬에서만 사용하므로 외부에 노출할 필요 없습니다.
+
+---
+
+## 8. 로그·재시작
 
 ```bash
 cd /web/hoops/streaming-viewer-prototype

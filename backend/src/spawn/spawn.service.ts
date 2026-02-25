@@ -3,6 +3,9 @@ import axios from 'axios';
 
 const HOOPSS_SPAWN_URL = process.env.HOOPSS_SPAWN_URL || 'http://localhost:11182';
 const HOOPSS_WS_HOST = process.env.HOOPSS_WS_HOST || 'localhost';
+/** HTTPS 페이지에서 WSS 사용 시 1. path 기반이면 /streaming/<port> 형태로 반환 */
+const HOOPSS_WS_SECURE = process.env.HOOPSS_WS_SECURE === '1' || process.env.HOOPSS_WS_SECURE === 'true';
+const HOOPSS_WS_PATH_PREFIX = process.env.HOOPSS_WS_PATH_PREFIX || '/streaming';
 
 export interface SpawnResult {
   sessionId: string;
@@ -68,7 +71,16 @@ export class SpawnService {
   private rewriteWsHost(wsUrl: string): string {
     try {
       const u = new URL(wsUrl);
+      const port = u.port || '11000';
       u.hostname = HOOPSS_WS_HOST;
+      if (HOOPSS_WS_SECURE && HOOPSS_WS_PATH_PREFIX) {
+        u.protocol = 'wss:';
+        u.port = '';
+        u.pathname = `${HOOPSS_WS_PATH_PREFIX.replace(/\/$/, '')}/${port}`;
+        u.search = '';
+        u.hash = '';
+        return u.toString();
+      }
       return u.toString();
     } catch {
       return wsUrl;
