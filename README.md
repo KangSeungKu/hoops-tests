@@ -34,7 +34,7 @@ docker compose build --no-cache hoops-spawn
 docker compose up --build
 ```
 
-브라우저에서 **http://localhost:3000** 접속 후, **파일을 선택**(.sc/.scs/.scz/.dwg/.step/.iges 등)한 뒤 "뷰어 시작" 클릭. (모델 이름 입력란은 제거되어 있으며, 파일 업로드만 사용합니다.)
+브라우저에서 **http://localhost:3010** 접속 후, **파일을 선택**(.sc/.scs/.scz/.dwg/.step/.iges 등)한 뒤 "뷰어 시작" 클릭. (모델 이름 입력란은 제거되어 있으며, 파일 업로드만 사용합니다.)
 
 ## 서버 배포 시 필요한 것
 
@@ -171,7 +171,7 @@ docker compose up --build
 
 | 포트    | 용도                    |
 |--------|-------------------------|
-| 3000   | 앱(React + Nest API)    |
+| 3010   | 앱(React + Nest API)    |
 | 11182  | Spawn REST API          |
 | 11180  | HOOPS 파일 서버         |
 | 11000~11031 | SC Server WebSocket |

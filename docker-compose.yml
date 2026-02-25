@@ -1,6 +1,6 @@
 # HOOPS 스트리밍 뷰어 프로토타입 - Windows Docker Desktop
 # 실행: streaming-viewer-prototype 폴더에서 docker compose up --build
-# 브라우저: http://localhost:3000
+# 브라우저: http://localhost:3010
 
 services:
   # HOOPS Spawn Server (ts3d_sc_server 풀 관리)
@@ -51,7 +51,7 @@ services:
       dockerfile: streaming-viewer-prototype/Dockerfile.app
     container_name: streaming-viewer-app
     ports:
-      - "3000:3000"
+      - "3010:3000"
     environment:
       - NODE_ENV=production
       - HOOPSS_SPAWN_URL=http://hoops-spawn:11182
