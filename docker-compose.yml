@@ -59,6 +59,8 @@ services:
       - HOOPSS_WS_SECURE=${HOOPSS_WS_SECURE:-0}
       - HOOPSS_WS_PATH_PREFIX=${HOOPSS_WS_PATH_PREFIX:-/streaming}
       - HOOPSS_LICENSE=${HOOPSS_LICENSE:-}
+      # .env의 CONVERT_OUTPUT_SCZ=1 이면 변환 시 단일 .scz 파일 생성 (빌드 캐시 무관, 런타임 env)
+      - CONVERT_OUTPUT_SCZ=${CONVERT_OUTPUT_SCZ:-0}
     volumes:
       # 업로드된 파일 저장: 호스트(프로젝트/uploads) → 컨테이너 /app/uploads
       - ./uploads:/app/uploads

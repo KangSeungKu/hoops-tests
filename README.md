@@ -34,7 +34,7 @@ docker compose build --no-cache hoops-spawn
 docker compose up --build
 ```
 
-브라우저에서 **http://localhost:3010** 접속 후, **파일을 선택**(.sc/.scs/.scz/.dwg/.step/.iges 등)한 뒤 "뷰어 시작" 클릭. (모델 이름 입력란은 제거되어 있으며, 파일 업로드만 사용합니다.)
+브라우저에서 **http://localhost:3010** 접속 후, **파일을 선택**(.sc/.scs/.scz, .ifc, .hsf, .dwg, .step, .stl, .obj, .fbx 등)한 뒤 "뷰어 시작" 클릭. (모델 이름 입력란은 제거되어 있으며, 파일 업로드만 사용합니다.)
 
 ## 서버 배포 시 필요한 것
 
@@ -60,7 +60,7 @@ docker compose up --build
 ## SC/SCS/SCZ 및 파일 업로드
 
 - **다이렉트 스트리밍:** `.sc`, `.xml`, **`.scs`**, **`.scz`** — 컨버팅 없이 `uploads` 볼륨에 저장 후 바로 스트리밍됩니다. Config의 `modelDirs`/`fileServerStaticDirs`에 `uploads`가 포함되어 있습니다.
-- **변환 후 스트리밍:** **`.dwg`**, **`.step`**, **`.stp`**, **`.iges`**, **`.igs`** — HOOPS Converter로 SC 형식으로 변환한 뒤 `uploads`에 저장·스트리밍합니다. 변환을 위해 **`.env`에 `HOOPSS_LICENSE`** 설정이 필요하며, 앱 이미지는 상위(HOOPS 루트) 컨텍스트에서 빌드해 `authoring/converter/bin/linux64`가 포함됩니다.
+- **변환 후 스트리밍:** HOOPS Converter로 **SC/SCZ**로 변환 후 스트리밍. 지원 포맷: HOOPS/중립(hsf, prc, obj, stl, u3d, wrl, 3mf, gltf, glb, fbx, dae, 3dpdf), AutoCAD(dwg, dxf, dgn), CATIA(catpart, catproduct, 3dxml 등), BIM(ifc, ifczip, rvt, rfa, nwd), Mechanical(sldprt, step, igs 등), Point Cloud(pts, ptx, xyz). 변환을 위해 **`.env`에 `HOOPSS_LICENSE`** 설정이 필요하며, 앱 이미지는 상위(HOOPS 루트) 컨텍스트에서 빌드해 `authoring/converter/bin/linux64`가 포함됩니다. **SCZ 출력:** `.env`에 `CONVERT_OUTPUT_SCZ=1` 설정 시 변환 결과를 SCZ로 저장합니다. 이 값은 **런타임**에 읽히므로, 변경 후 `docker compose up -d`로 앱만 재시작하면 되며 **빌드 캐시/재빌드는 필요 없습니다.**
 - **볼륨:** 호스트 `streaming-viewer-prototype/uploads` → app `/app/uploads`, hoops-spawn `/app/hoops/uploads`. 업로드 후 반환된 `modelId`로 "뷰어 시작"을 누르면 됩니다.
 
 ## 문제 해결: `spawn .../ts3d_sc_server ENOENT` / 503
@@ -108,6 +108,19 @@ docker compose up --build
 ```
 
 이미지를 다시 빌드한 뒤, **파일을 업로드**하고 "뷰어 시작"을 누르면 모델이 표시되어야 합니다. 여전히 비어 있으면 브라우저 개발자 도구(F12) 콘솔에서 WebViewer/스트리밍 관련 오류가 있는지 확인하세요.
+
+## 문제 해결: "세션 생성 중..." 멈춤 / WebSocket connection to 'wss://localhost/...' failed
+
+**로컬 Docker Desktop**에서 "세션 생성 중..."만 보이고 콘솔에 `WebSocket connection to 'wss://localhost/streaming/11000' failed` 가 나오는 경우, **WSS(보안 WebSocket)** 를 쓰도록 되어 있지만 로컬에는 TLS가 없어 연결이 실패한 것입니다.
+
+**해결:** `.env`에서 **`HOOPSS_WS_SECURE=0`** 으로 두세요. 로컬에서는 `ws://localhost:11000` 형태로 연결해야 합니다.  
+`HOOPSS_WS_SECURE=1` 은 **HTTPS로 배포한 뒤** nginx 등에서 WSS 프록시를 둘 때만 사용합니다. (자세한 설정은 `DEPLOY_SERVER.md` 참고.)
+
+```env
+HOOPSS_WS_SECURE=0
+```
+
+변경 후 **앱만 재시작**하면 됩니다. (`docker compose up -d` 또는 `docker compose restart app`)
 
 ## 문제 해결: "Failed to load WebViewer script"
 
@@ -164,7 +177,7 @@ docker compose up --build
 - `POST /api/upload`  
   Body: `multipart/form-data`, 필드명 `file`.  
   **다이렉트 스트리밍:** `.sc`, `.xml`, `.scs`, `.scz`.  
-  **변환 후 스트리밍:** `.dwg`, `.step`, `.stp`, `.iges`, `.igs` (HOOPS Converter 사용, `HOOPSS_LICENSE` 필요).  
+  **변환 후 스트리밍:** ifc, hsf, dwg, step, stl, obj, fbx, gltf, glb 등 (HOOPS Converter → SC/SCZ, `HOOPSS_LICENSE` 필요).  
   Response: `{ "modelId": "파일명(확장자 제외)" }`. 업로드/변환 결과는 `uploads` 볼륨에 저장되며, 해당 modelId로 spawn 시 스트리밍됨.
 
 ## 포트
