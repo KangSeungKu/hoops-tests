@@ -129,6 +129,33 @@ body {
   margin-top: 0;
   color: #666;
 }
+.placeholder .format-tables {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+.placeholder .format-tables table {
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  color: #888;
+  text-align: left;
+}
+.placeholder .format-tables caption {
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  color: #aaa;
+}
+.placeholder .format-tables th,
+.placeholder .format-tables td {
+  border: 1px solid #444;
+  padding: 0.35rem 0.6rem;
+}
+.placeholder .format-tables th {
+  background: rgba(255, 255, 255, 0.06);
+  color: #aaa;
+}
 .viewer-wrap {
   flex: 1;
   display: flex;

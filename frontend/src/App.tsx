@@ -44,7 +44,7 @@ export default function App() {
   return (
     <div className="app">
       <header className="header">
-        <h1>HOOPS 스트리밍 뷰어</h1>
+        <h1>CADian 3D CAD 스트리밍 뷰어</h1>
         {started && (
           <button type="button" onClick={() => setStarted(false)}>
             세션 종료
@@ -68,7 +68,7 @@ export default function App() {
                 <span className="upload-btn">
                   {uploadStatus === 'uploading' && '업로드 중…'}
                   {uploadStatus === 'converting' && '변환 중…'}
-                  {(uploadStatus === 'idle' || uploadStatus === 'done') && '파일 선택 (sc, scs, scz, ifc, hsf, dwg, step, stl, obj, fbx 등)'}
+                  {(uploadStatus === 'idle' || uploadStatus === 'done') && '파일 선택 (CATIA, SOLIDWORKS관련 파일 외 ifc, dwg, step 등)'}
                   {uploadStatus === 'error' && '다시 선택'}
                 </span>
               </label>
@@ -103,8 +103,59 @@ export default function App() {
             <p>
               <strong>파일을 선택</strong>한 뒤 &quot;뷰어 시작&quot;을 누르세요.
             </p>
+            <div className="format-tables">
+              <table>
+                <caption>CATIA</caption>
+                <thead>
+                  <tr>
+                    <th>구분</th>
+                    <th>확장자</th>
+                    <th>설명</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>CATIA V4</td>
+                    <td>MODEL, SESSION</td>
+                    <td>CATIA V4 형식의 모델/세션 파일</td>
+                  </tr>
+                  <tr>
+                    <td>CATIA V5</td>
+                    <td>CATDrawing, CATPart, CATProduct</td>
+                    <td>2D 도면, 단일 파트, 조립품</td>
+                  </tr>
+                  <tr>
+                    <td>CATIA V6</td>
+                    <td>3DXML</td>
+                    <td>3D XML 형식 (CATIA V6 / 3DExperience)</td>
+                  </tr>
+                </tbody>
+              </table>
+              <table>
+                <caption>SOLIDWORKS</caption>
+                <thead>
+                  <tr>
+                    <th>구분</th>
+                    <th>확장자</th>
+                    <th>설명</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Part 파일</td>
+                    <td>.SLDPRT</td>
+                    <td>단일 부품(Part) 파일</td>
+                  </tr>
+                  <tr>
+                    <td>Assembly 파일</td>
+                    <td>.SLDASM</td>
+                    <td>조립체(Assembly) 파일</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
             <small>
-              .sc / .scs / .scz / .xml: 다이렉트 스트리밍. 그 외 포맷(ifc, hsf, dwg, step, stl, obj, fbx, gltf 등): 변환 후 SC/SCZ로 스트리밍.
+              그 외 포맷(ifc, hsf, dwg, step, stl, obj, fbx, gltf 등).
             </small>
           </div>
         )}
